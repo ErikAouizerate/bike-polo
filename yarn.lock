@@ -1512,9 +1512,9 @@ better-auth@^1.2.8:
     zod "^3.24.1"
 
 better-call@^1.0.8:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/better-call/-/better-call-1.0.9.tgz#25746b4d43881c7740ffb8526c3aedb7db60fe2e"
-  integrity sha512-Qfm0gjk0XQz0oI7qvTK1hbqTsBY4xV2hsHAxF8LZfUYl3RaECCIifXuVqtPpZJWvlCCMlQSvkvhhyuApGUba6g==
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/better-call/-/better-call-1.0.12.tgz#00427432322f107bb5157b8279a04005d224c975"
+  integrity sha512-ssq5OfB9Ungv2M1WVrRnMBomB0qz1VKuhkY2WxjHaLtlsHoSe9EPolj1xf7xf8LY9o3vfk3Rx6rCWI4oVHeBRg==
   dependencies:
     "@better-fetch/fetch" "^1.1.4"
     rou3 "^0.5.1"
