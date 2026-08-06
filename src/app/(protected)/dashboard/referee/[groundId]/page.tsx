@@ -17,8 +17,8 @@ import {
   resetGame,
 } from "@/db/repositories/ground";
 import { getTournament, updateTournament } from "@/db/repositories/tournament";
+import { getBaseUrl } from "@/lib/getBaseUrl";
 import { routes } from "@/routes";
-import { headers } from "next/headers";
 
 export default async function RefereePage({
   params,
@@ -26,7 +26,6 @@ export default async function RefereePage({
   params: Promise<{ groundId: string }>;
 }) {
   const { groundId } = await params;
-  const headersData = await headers();
 
   const ground = await getGroundById(groundId);
 
@@ -35,14 +34,7 @@ export default async function RefereePage({
     tournament = await getTournament(ground.tournamentId);
   }
 
-  const referer = headersData.get("referer");
-
-  if (!referer) {
-    return null;
-  }
-
-  const url = new URL(referer);
-  const baseUrl = `${url.protocol}//${url.hostname}:${url.port}`;
+  const baseUrl = await getBaseUrl();
 
   if (!ground) {
     return <div className="text-red-500">Ground not found</div>;

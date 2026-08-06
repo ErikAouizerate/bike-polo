@@ -7,6 +7,7 @@ import {
 } from "@/db/repositories/tournament";
 import { auth } from "@/lib/auth";
 import { signOut } from "@/lib/auth-client";
+import { getBaseUrl } from "@/lib/getBaseUrl";
 import { routes } from "@/routes";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -26,14 +27,7 @@ export default async function Dashboard() {
     session.user.id
   );
 
-  const referer = headersData.get("referer");
-
-  if (!referer) {
-    return null;
-  }
-
-  const url = new URL(referer);
-  const baseUrl = `${url.protocol}//${url.hostname}:${url.port}`;
+  const baseUrl = await getBaseUrl();
 
   return (
     <div className="">
