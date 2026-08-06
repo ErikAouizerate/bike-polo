@@ -18,7 +18,10 @@ services:
       retries: 5
 
   bike_polo_app:
-    build: .
+    build:
+      context: .
+      args:
+        BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
     ports:
       - "3004:3000"
     environment:
