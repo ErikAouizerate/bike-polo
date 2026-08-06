@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useMIDIContext, ACTIONS_LABELS } from "@/context/MIDIContext";
+import { useMIDIContext, ACTION_KEYS, getActionLabels } from "@/context/MIDIContext";
 import { Cable, Unplug, Gamepad2, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
@@ -27,7 +27,15 @@ function formatNote(note: number): string {
   return name ? `${note} (${name})` : `${note}`;
 }
 
-export default function MIDIPanel() {
+export default function MIDIPanel({
+  teamA = "Équipe A",
+  teamB = "Équipe B",
+}: {
+  teamA?: string;
+  teamB?: string;
+}) {
+  const labels = getActionLabels(teamA, teamB);
+
   const {
     isConnected,
     isConnecting,
@@ -102,7 +110,8 @@ export default function MIDIPanel() {
           <div className="flex flex-col gap-1">
             <p className="text-sm font-medium">Mapping des pads</p>
             <div className="flex flex-col gap-1">
-              {Object.entries(ACTIONS_LABELS).map(([action, label]) => {
+              {ACTION_KEYS.map((action) => {
+                const label = labels[action];
                 const note = findNote(action);
                 const isLearning = learnMode === action;
                 return (

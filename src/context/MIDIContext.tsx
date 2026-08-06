@@ -53,12 +53,16 @@ function saveMapping(mapping: Record<number, string>) {
   } catch {}
 }
 
-export const ACTIONS_LABELS: Record<string, string> = {
-  teamA_plus: "Équipe A +1",
-  teamA_minus: "Équipe A -1",
-  teamB_plus: "Équipe B +1",
-  teamB_minus: "Équipe B -1",
-};
+export const ACTION_KEYS = ["teamA_plus", "teamA_minus", "teamB_plus", "teamB_minus"] as const;
+
+export function getActionLabels(teamA: string, teamB: string): Record<string, string> {
+  return {
+    teamA_plus: `${teamA} +1`,
+    teamA_minus: `${teamA} -1`,
+    teamB_plus: `${teamB} +1`,
+    teamB_minus: `${teamB} -1`,
+  };
+}
 
 export function MIDIProvider({ children }: { children: ReactNode }) {
   const {

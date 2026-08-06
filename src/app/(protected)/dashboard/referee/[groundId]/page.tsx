@@ -26,7 +26,6 @@ export default async function RefereePage({
   params: Promise<{ groundId: string }>;
 }) {
   const { groundId } = await params;
-  console.log("groundId", groundId);
   const headersData = await headers();
 
   const ground = await getGroundById(groundId);
@@ -164,7 +163,7 @@ export default async function RefereePage({
             />
           </div>
           <div className="flex flex-col">
-            <MIDIPanel />
+            <MIDIPanel teamA={ground.teamA} teamB={ground.teamB} />
           </div>
         </div>
       </div>
