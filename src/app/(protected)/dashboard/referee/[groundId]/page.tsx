@@ -35,8 +35,6 @@ export default async function RefereePage({
     tournament = await getTournament(ground.tournamentId);
   }
 
-  console.log("TOUT", tournament);
-
   const referer = headersData.get("referer");
 
   if (!referer) {

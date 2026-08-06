@@ -1,0 +1,57 @@
+image: node:22-alpine
+
+stages:
+  - prepare
+  - test
+  - deploy
+
+cache: &cache
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+install:
+  stage: prepare
+  script:
+    - yarn install --frozen-lockfile
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1h
+  cache:
+    <<: *cache
+    policy: pull-push
+
+lint:
+  stage: test
+  needs: [install]
+  script:
+    - yarn lint
+  cache:
+    <<: *cache
+    policy: pull
+
+build:
+  stage: test
+  needs: [install]
+  script:
+    - yarn build
+  cache:
+    <<: *cache
+    policy: pull
+
+deploy:
+  stage: deploy
+  image: curlimages/curl
+  needs: [lint, build]
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - >
+      curl -X POST
+      -H "Content-Type: application/json"
+      -H "X-Gitlab-Event: Push Hook"
+      -d '{"object_kind":"push","ref":"refs/heads/main","repository":{"full_name":"'"${CI_PROJECT_PATH}"'"}}'
+      "${DEPLOY_WEBHOOK_URL}"
+  only:
+    - main
