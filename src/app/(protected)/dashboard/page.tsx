@@ -1,6 +1,7 @@
 import GroundCard from "@/components/GroundCard";
 import GroundCardCreation from "@/components/GroundCardCreation";
 import LabelEditor from "@/components/LabelEditor";
+import { updateGround } from "@/db/repositories/ground";
 import {
   getTournamentsWithGrounds,
   updateTournament,
@@ -48,6 +49,10 @@ export default async function Dashboard() {
                 <GroundCard
                   ground={ground}
                   url={`${baseUrl}${routes.stream}/${ground.slug}`}
+                  onValidateName={async (name) => {
+                    "use server";
+                    await updateGround(ground.id, { name });
+                  }}
                 />
               </li>
             ))}

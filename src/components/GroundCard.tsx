@@ -1,3 +1,5 @@
+"use client";
+
 import { Copy, Podcast, Shield } from "lucide-react";
 import { formatSecondsToTime } from "@/lib/utils";
 
@@ -16,24 +18,21 @@ import { routes } from "@/routes";
 import LabelEditor from "./LabelEditor";
 import { Ground } from "@/db/schema";
 import TimerDisplay from "./TimerDisplay";
-import { updateGround } from "@/db/repositories/ground";
-
+import { toast } from "sonner";
 type CardProps = React.ComponentProps<typeof Card> & {
   ground: Ground;
   url: string;
+  onValidateName: (name: string) => Promise<void>;
 };
 
-export default function GroundCard({ ground, url }: CardProps) {
+export default function GroundCard({ ground, url, onValidateName }: CardProps) {
   return (
     <Card className={cn("w-[320px]")}>
       <CardHeader className="flex flex-row items-center justify-between pb-2 border-b-2 border-gray-300 h-16">
         <CardTitle className="mt-1.5 flex-1">
           <LabelEditor
             value={ground.name}
-            onValidate={async (name) => {
-              "use server";
-              await updateGround(ground.id, { name });
-            }}
+            onValidate={onValidateName}
           >
             {ground.name}
           </LabelEditor>
@@ -51,7 +50,13 @@ export default function GroundCard({ ground, url }: CardProps) {
                 Watch scoregame
               </Link>
             </p>
-            <Copy />
+            <Copy
+              className="cursor-pointer"
+              onClick={async () => {
+                await navigator.clipboard.writeText(url);
+                toast("Lien copié");
+              }}
+            />
           </div>
         </div>
         <div className=" flex items-center justify-between gap-2 rounded-md border p-4 text-center">
