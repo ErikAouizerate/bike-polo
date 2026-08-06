@@ -19,7 +19,7 @@ export default function ScoreboardTV({
             </div>
           </div>
           <div className="flex items-center justify-center min-w-[140px]">
-            <div className="bg-gray-800/90 rounded-xl px-6 py-3 shadow-lg backdrop-blur">
+            <div className="bg-gray-800/90 rounded-xl px-6 py-3 shadow-lg backdrop-blur text-white">
               <TimerDisplay ground={ground} withTimerDisplay />
             </div>
           </div>
