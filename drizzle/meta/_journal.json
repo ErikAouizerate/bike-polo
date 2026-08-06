@@ -15,6 +15,13 @@
       "when": 1748246611016,
       "tag": "0001_damp_ultragirl",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786054012981,
+      "tag": "0002_quick_the_executioner",
+      "breakpoints": true
     }
   ]
 }

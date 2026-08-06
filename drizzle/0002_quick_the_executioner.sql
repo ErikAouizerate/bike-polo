@@ -1,0 +1,1 @@
+ALTER TABLE "tournament" ADD COLUMN "stream_style" text DEFAULT 'neon' NOT NULL;

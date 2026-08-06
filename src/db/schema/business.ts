@@ -17,6 +17,7 @@ export const tournamentSchema = pgTable("tournament", {
     .$defaultFn(() => crypto.randomUUID()),
   name: text().notNull(),
   image: text(),
+  streamStyle: text().notNull().default("neon"),
   createdAt: timestamp()
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),

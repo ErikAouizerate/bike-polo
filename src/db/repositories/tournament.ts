@@ -26,6 +26,12 @@ export const getTournamentsWithGrounds = async (userId: string) => {
   })) as TournamentWithGrounds[];
 };
 
+export const getTournament = async (tournamentId: string) => {
+  return await db.query.tournamentSchema.findFirst({
+    where: (t, { eq }) => eq(t.id, tournamentId),
+  });
+};
+
 export const updateTournament = async (
   tournamentId: string,
   updates: Partial<Tournament>

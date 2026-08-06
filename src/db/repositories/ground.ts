@@ -14,6 +14,9 @@ export const getGroundById = async (id: string) => {
 export const getGround = async (slug: number) => {
   return await db.query.groundSchema.findFirst({
     where: (g, { eq }) => eq(g.slug, slug),
+    with: {
+      tournament: true,
+    },
   });
 };
 

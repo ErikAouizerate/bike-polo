@@ -1,7 +1,12 @@
 import { getGround } from "@/db/repositories/ground";
 import Relaoad from "./Reload";
 import FullScreen from "./FullScreen";
-import TimerDisplay from "@/components/TimerDisplay";
+import ScoreboardNeon from "@/components/scoreboard/ScoreboardNeon";
+import ScoreboardSobre from "@/components/scoreboard/ScoreboardSobre";
+import ScoreboardTV from "@/components/scoreboard/ScoreboardTV";
+import { Ground, Tournament } from "@/db/schema";
+
+type GroundWithTournament = Ground & { tournament: Tournament };
 
 export default async function Stream({
   params,
@@ -10,7 +15,7 @@ export default async function Stream({
 }) {
   const { slug } = await params;
 
-  const ground = await getGround(slug);
+  const ground = (await getGround(slug)) as GroundWithTournament | undefined;
 
   if (!ground || !ground.isStreaming) {
     return (
@@ -20,29 +25,16 @@ export default async function Stream({
     );
   }
 
+  const streamStyle = ground.tournament.streamStyle;
+
   return (
     <FullScreen>
-      <div className="relative max-w-[767px] font-scoreboard text-7xl text-white p-4">
-        <div className="absolute inset-0 bg-black opacity-80 z-0 " />
-
-        <div className="relative z-10 w-full h-full flex flex-col text-amber-200 neon-text-yellow">
-          <div className="flex">
-            <div className="w-[280px] text-center font-lightdot text-red-400 neon-text-red">
-              {ground.teamAScore}
-            </div>
-            <TimerDisplay ground={ground} withTimerDisplay />
-            <div className="w-[280px] text-center font-lightdot text-red-400 neon-text-red">
-              {ground.teamBScore}
-            </div>
-          </div>
-
-          <div className="mt-8 text-5xl flex justify-between w-full text-center items-center break-words">
-            <div className="w-[280px]">{ground.teamA}</div>
-            <div className="w-[280px]">{ground.teamB}</div>
-          </div>
-        </div>
-        <Relaoad />
+      <div className="flex items-center justify-center w-screen h-screen">
+        {streamStyle === "neon" && <ScoreboardNeon ground={ground} />}
+        {streamStyle === "sobre" && <ScoreboardSobre ground={ground} />}
+        {streamStyle === "tv" && <ScoreboardTV ground={ground} />}
       </div>
+      <Relaoad />
     </FullScreen>
   );
 }

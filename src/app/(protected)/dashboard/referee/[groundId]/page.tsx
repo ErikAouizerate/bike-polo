@@ -4,6 +4,7 @@ import SwitchStream from "@/components/SwitchStream";
 import Timer from "@/components/Timer";
 import TimerEditor from "@/components/TimerEditor";
 import MIDIPanel from "@/components/MIDIPanel";
+import ScoreboardStyleSelector from "@/components/ScoreboardStyleSelector";
 import { MIDIProvider } from "@/context/MIDIContext";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -15,6 +16,7 @@ import {
   resetTimer,
   resetGame,
 } from "@/db/repositories/ground";
+import { getTournament, updateTournament } from "@/db/repositories/tournament";
 import { routes } from "@/routes";
 import { headers } from "next/headers";
 
@@ -24,9 +26,17 @@ export default async function RefereePage({
   params: Promise<{ groundId: string }>;
 }) {
   const { groundId } = await params;
+  console.log("groundId", groundId);
   const headersData = await headers();
 
   const ground = await getGroundById(groundId);
+
+  let tournament = null;
+  if (ground) {
+    tournament = await getTournament(ground.tournamentId);
+  }
+
+  console.log("TOUT", tournament);
 
   const referer = headersData.get("referer");
 
@@ -130,6 +140,18 @@ export default async function RefereePage({
                   await updateGround(groundId, { isStreaming: checked });
                 }}
               />
+              {tournament && (
+                <ScoreboardStyleSelector
+                  currentStyle={tournament.streamStyle}
+                  tournamentId={tournament.id}
+                  updateStyle={async (tournamentId, style) => {
+                    "use server";
+                    await updateTournament(tournamentId, {
+                      streamStyle: style,
+                    });
+                  }}
+                />
+              )}
             </div>
           </div>
           <div className="flex flex-col ">
